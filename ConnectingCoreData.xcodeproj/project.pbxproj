@@ -39,6 +39,7 @@
 		DA4B8E442AD0DA9D00C949D5 = {
 			isa = PBXGroup;
 			children = (
+				DA4B8E5B2AD0DA9E00C949D5 /* ConnectingCoreData.xcdatamodeld */,
 				DA4B8E4F2AD0DA9D00C949D5 /* ConnectingCoreData */,
 				DA4B8E4E2AD0DA9D00C949D5 /* Products */,
 			);
@@ -59,7 +60,6 @@
 				DA4B8E522AD0DA9D00C949D5 /* ContentView.swift */,
 				DA4B8E542AD0DA9E00C949D5 /* Assets.xcassets */,
 				DA4B8E592AD0DA9E00C949D5 /* Persistence.swift */,
-				DA4B8E5B2AD0DA9E00C949D5 /* ConnectingCoreData.xcdatamodeld */,
 				DA4B8E562AD0DA9E00C949D5 /* Preview Content */,
 			);
 			path = ConnectingCoreData;
