@@ -23,69 +23,99 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                    } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
+            VStack {
+                Text("Dishes")
+                    .font(.title)
+                List {
+                    ForEach(dishes) { dish in
+                        VStack(alignment: .leading){
+                            Text (dish.name!)
+                            HStack (spacing: 40){
+                                Text (dish.size!)
+                                Spacer ()
+                                Text("$S\(dish.price, specifier: "%.2f")")
+                            }
+                            .foregroundColor(.gray)
+                            .font(.callout)
+                        }
                     }
                 }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+                Divider()
+                Text("Desserts")
+                    .font(.title)
+                List {
+                    ForEach(desserts) { dessert in
+                        VStack(alignment: .leading){
+                            Text(dessert.name!)
+                            HStack (spacing: 40) {
+                                Text(dessert.size!)
+                                Spacer()
+                                Text("$\(dessert.price, specifier: "%.2f")")
+                            }
+                            .foregroundColor(.gray)
+                            .font(.callout)
+                        }
                     }
                 }
-            }
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                Divider()
+                HStack(spacing: 50) {
+                    Button(action: {
+                        createDishes()
+                    }, label: {
+                        Text("Add dishes")
+                    })
+                    Button(action: {
+                        createDesserts()
+                    }, label: {
+                        Text("Add desserts")
+                    })
+                }
             }
         }
     }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+    
+    func createDishes() {
+        let hamburger = Dish(context: viewContext)
+        hamburger.name = "Kingu"
+        hamburger.price = 5.99
+        hamburger.size = "Large"
+        let salad = Dish(context: viewContext)
+        salad.name = "Green"
+        salad.price = 3.99
+        salad.size = "Medium"
+        let doubleCheeseBurger = Dish(context: viewContext)
+        doubleCheeseBurger.name = "Cheezy"
+        doubleCheeseBurger.price = 6.49
+        doubleCheeseBurger.size = "Extra Large"
+        saveDatanase()
+    }
+    func createDesserts() {
+        let cheeseCake = Dessert(context: viewContext)
+        cheeseCake.name = "Cheese Cake"
+        cheeseCake.price = 2.99
+        cheeseCake.size = "Small"
+        let iceCream = Dessert(context: viewContext)
+        iceCream.name = "Vanilla Ice Cream"
+        iceCream.price = 2.49
+        iceCream.size = "Small"
+        saveDatanase()
+    }
+    func saveDatanase() {
+        guard viewContext.hasChanges else { return }
+        do {
+            try viewContext.save()
+        } catch (let error ) {
+            print(error.localizedDescription)
         }
     }
 }
 
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
-
-#Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+//#Preview {
+//    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+//}
+//
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }
