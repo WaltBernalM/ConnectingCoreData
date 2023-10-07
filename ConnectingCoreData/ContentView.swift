@@ -10,11 +10,16 @@ import CoreData
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
-
+    
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Dish.name, ascending: true)], animation: .default)
+    private var dishes: FetchedResults<Dish>
+    
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Dessert.name, ascending: true)],
         animation: .default)
-    private var items: FetchedResults<Item>
+    private var desserts: FetchedResults<Dessert>
+        
 
     var body: some View {
         NavigationView {
